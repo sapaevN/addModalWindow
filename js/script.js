@@ -91,44 +91,52 @@ document.addEventListener("DOMContentLoaded", () => {
 	const modalTrigger = document.querySelectorAll('[data-modal-open]');
 	const modal = document.querySelector('.modal');
 	const modalClose = document.querySelector('[data-modal-close]');
-
-
-	modalTrigger.forEach(btn =>{
-		btn.addEventListener('click', showModal)
-	})
-	
-	
 	function showModal() {
 		modal.style.display = 'block';
 		document.body.style.overflow = 'hidden';
+		clearInterval(modalTimerID)
 	}
 	function closeModal() {
 		modal.style.display = 'none';
 		document.body.style.overflow = 'auto';
 	}
 
+	modalTrigger.forEach(btn => {
+		btn.addEventListener('click', showModal)
+	})
+
+
 	modalClose.addEventListener('click', closeModal)
 
-	modal.addEventListener('click',(e) => {
-		if(e.target === modal){
+	modal.addEventListener('click', (e) => {
+		if (e.target === modal) {
 			modal.style.display = 'none';
 			document.body.style.overflow = 'auto'
 		}
 	})
-	document.addEventListener('keydown',(event)=>{
-		if(event.code == "Escape" && modal.style.display == 'block'){
+	document.addEventListener('keydown', (event) => {
+		if (event.code == "Escape" && modal.style.display == 'block') {
 			modal.style.display = 'none';
 			document.body.style.overflow = 'auto'
 		}
 	})
 
+	// МОДИФИКАЦИЯ МОДАЛЬНОГО ОКНА  
+	const modalTimerID = setTimeout(showModal, 60000)
 
+	// window.addEventListener('scroll', () => {
+	// 	if(window.pageYOffset + document.documentElement)
+	// })
 
+	function showModalByScroll(){
+		if(window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight-1){
+			showModal()
+			window.removeEventListener('scroll',showModalByScroll)
+		}
+	}
 
-
-
-
-
+	window.addEventListener('scroll',showModalByScroll )
+	
 
 
 
